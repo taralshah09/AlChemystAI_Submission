@@ -150,32 +150,3 @@ npm test
 | `large` | 500KB+ context snapshot |
 | `document` | Long streaming response |
 
----
-
-## Project Structure
-```
-agent-console/
-├── app/
-│   ├── layout.tsx          — root layout (dark theme)
-│   └── page.tsx            — main page: AgentProvider + 3-panel layout
-├── lib/ws/
-│   ├── types.ts            — all protocol types (zero any)
-│   └── sequenceBuffer.ts   — min-heap reorder + dedup buffer
-├── hooks/
-│   └── useAgentSocket.ts   — WS lifecycle, reconnect, PING/PONG, TOOL_ACK
-├── store/
-│   └── agentStore.ts       — useReducer state machine + React context
-├── components/
-│   ├── chat/
-│   │   ├── ChatPanel.tsx   — scrollable chat + input form
-│   │   ├── MessageBubble.tsx — renders token segments + tool call cards
-│   │   └── ToolCallCard.tsx  — tool call with waiting/completed states
-│   ├── timeline/
-│   │   └── TraceTimeline.tsx — live event log, token batching, filter bar
-│   ├── context/
-│   │   └── ContextInspector.tsx — JSON diff tree + history scrubber
-│   └── ui/
-│       └── ConnectionStatus.tsx — connection state badge
-└── __tests__/
-    └── sequenceBuffer.test.ts  — 10 unit tests for the reorder buffer
-```

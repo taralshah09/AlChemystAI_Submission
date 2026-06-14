@@ -6,7 +6,7 @@ A Next.js application that connects to a mock AI agent backend over WebSockets, 
 
 ## Architectural Approach
 
-Protocol handling and rendering are strictly separated: a `SequenceBuffer` (min-heap + seen-set) absorbs and reorders incoming WebSocket frames before anything touches React state, while a single `useReducer` acts as the application's state machine — transitions are exhaustively typed and side-effect-free. The WebSocket lifecycle (connect → connected → reconnecting → resuming → connected) is managed in a single `useAgentSocket` hook; the UI never inspects the raw socket, only the derived `AgentState`.
+Protocol handling and rendering are strictly separated: a `SequenceBuffer` (min-heap + seen-set) absorbs and reorders incoming WebSocket frames before anything touches React state, while a single `useReducer` acts as the application's state machine - transitions are exhaustively typed and side-effect-free. The WebSocket lifecycle (connect -> connected -> reconnecting -> resuming -> connected) is managed in a single `useAgentSocket` hook; the UI never inspects the raw socket, only the derived `AgentState`.
 
 ---
 
@@ -14,17 +14,18 @@ Protocol handling and rendering are strictly separated: a `SequenceBuffer` (min-
 https://youtu.be/mOWjLlGElJ4
 
 Scenarios shown in the recording:
-1. Connection drop mid-stream → seamless reconnect + resume
-2. Out-of-order seq delivery → tokens reordered, text correct
-3. Rapid sequential tool calls → both cards appear, both results land
-4. 500KB+ context snapshot → context panel stays interactive
-5. Corrupt PING (empty challenge) → app does not crash or disconnect
+1. Connection drop mid-stream -> seamless reconnect + resume
+2. Out-of-order seq delivery -> tokens reordered, text correct
+3. Rapid sequential tool calls -> both cards appear, both results land
+4. 500KB+ context snapshot -> context panel stays interactive
+5. Corrupt PING (empty challenge) -> app does not crash or disconnect
 
 ---
 
-## WebSocket State Machine
-<img width="788" height="711" alt="image" src="https://github.com/user-attachments/assets/218d112a-e0b3-495b-8529-79fc0c67a835" />
-<img width="686" height="600" alt="image" src="https://github.com/user-attachments/assets/dee55980-8adb-4204-b54a-aa2706bebe6a" />
+## Architecture
+Check out the architecture on https://app.eraser.io/workspace/Q1UQ4FkHO0yMPkTHfCLo?origin=share
+<img width="903" height="658" alt="image" src="https://github.com/user-attachments/assets/d8b92b8b-5f95-4440-9917-7fa7ecccecb8" />
+<img width="912" height="407" alt="image" src="https://github.com/user-attachments/assets/75baef5e-5e7e-4892-841b-318b886273aa" />
 
 
 ---
@@ -75,17 +76,6 @@ All entries should have `"verdict": "ok"`. The `/reset` endpoint clears the sess
 cd agent-console
 npm test
 ```
-
----
-
-## Try These Messages
-
-| Message | What it exercises |
-|---|---|
-| `hello` | Basic streaming, no tool calls |
-| `report` | One tool call mid-stream + context diff |
-| `analyze` | Two sequential tool calls |
-| `search` | Tool call before any tokens |
 | `large` | 500KB+ context snapshot |
 | `document` | Long streaming response |
 
